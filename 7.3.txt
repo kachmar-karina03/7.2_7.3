@@ -1,0 +1,124 @@
+// Lab_7_3.cpp
+// < Качмар Каріни >
+// Лабораторна робота No 7.3.
+// Кількість рядків, що не містять жодного нульового елементу (оформити у вигляді int- функції).
+//Максимальне з чисел, що зустрічаються в заданій матриці більше одного разу (оформити у вигляді void-функції). // Варіант 21
+#include <iostream>
+#include <iomanip>
+#include <time.h>
+using namespace std;
+
+int Part1_Count(int** a, const int rowCount, const int colCount, int& k_ne_zero);
+
+void Create(int** a, const int rowCount, const int colCount, const int Low, const int High);
+
+void Print(int** a, const int rowCount, const int colCount);
+
+void Max(int** a, const int rowCount, const int colCount);
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+
+    srand((unsigned)time(NULL));
+    int Low = -21;
+    int High = 18;
+
+    int rowCount;
+    int colCount;
+    cout << "k = "; cin >> rowCount;
+    cout << "n = "; cin >> colCount;
+
+    int** a = new int* [rowCount];
+    for (int i = 0; i < rowCount; i++)
+        a[i] = new int[colCount];
+
+    Create(a, rowCount, colCount, Low, High);
+    //Print(a, rowCount, colCount);
+    //Sort(a, rowCount, colCount);
+    Print(a, rowCount, colCount);
+
+
+
+    int k_ne_zero = 0;
+    cout << "Count of rows without 0" << endl;
+    if (Part1_Count(a, rowCount, colCount, k_ne_zero))
+    {
+        cout << endl;
+        cout << "count = " << k_ne_zero << endl;
+        cout << endl;
+    }
+    else
+    {
+        cout << "there are zero elements" << endl;
+        cout << endl;
+    }
+
+    
+    Max(a, rowCount, colCount);
+
+    //cout << max << endl;
+
+    return 0;
+}
+
+void Create(int** a, const int rowCount, const int colCount, const int Low, const int High)
+{
+    for (int i = 0; i < rowCount; i++)
+        for (int j = 0; j < colCount; j++)
+            a[i][j] = Low + rand() % (High - Low + 1);
+}
+
+void Print(int** a, const int rowCount, const int colCount)
+{
+    cout << endl;
+    for (int i = 0; i < rowCount; i++)
+    {
+        for (int j = 0; j < colCount; j++)
+            cout << setw(4) << a[i][j];
+        cout << endl;
+    }
+    cout << endl;
+}
+
+
+
+int Part1_Count(int** a, const int rowCount, const int colCount, int& k_ne_zero)
+{
+    bool result = true;
+    k_ne_zero = 0;
+    for (int i = 0; i < rowCount; i++)
+    {
+        for (int j = 0; j < colCount; j++)
+
+            if (a[i][j] != 0)
+            {
+                result = false;
+                k_ne_zero++;
+                break;
+            }
+    }
+
+    return result;
+
+}
+
+
+void Max(int**a, const int rowCount, const int colCount, int &max)
+{
+    max = a[0][0];
+    for (int i = 0; i < rowCount; i++)
+        for (int j = 0; j < colCount; j++)
+            if (a[i][j] > max)
+                max = a[i][j];
+   
+}
+
+int UnitTest(int* a, const int size)
+{
+  int S = 0;
+  for (int i = 0; i < size; i++)
+    S += a[i];
+  return S;
+}
+
